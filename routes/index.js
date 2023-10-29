@@ -5,7 +5,8 @@ var s = require('../webViewServer');
 router.post('/command/:cardId', function(req, res) {
     var cardId = req.params.cardId;
     var data = req.body;
-    console.log(new Date(), data);
+
+    console.log('hI hERE', data);
     s.send(cardId, data, function(err, receivedData){
         if(err){
             res.status(500).send(err.message)
@@ -16,5 +17,8 @@ router.post('/command/:cardId', function(req, res) {
 });
 
 
+router.post('/',function(req,res){
+console.log(req.body,'Sensor data');
+})
 
 module.exports = router;
