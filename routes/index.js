@@ -46,7 +46,7 @@ router.get('/upload', (req, res) => {
 });
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        fs.unlinkSync(file.path);
+        deleteAllFilesInDir(path.join(__dirname, '../public/'))
         cb(null, path.join(__dirname, '../public/'));
     },
     filename: (req, file, cb) => {
@@ -69,5 +69,16 @@ function getExtension(filename) {
     var ext = path.extname(filename || '').split('.');
     return ext[ext.length - 1];
 }
+
+function deleteAllFilesInDir(dirPath) {
+    try {
+        fs.readdirSync(dirPath).forEach(file => {
+            fs.unlinkSync(path.join(dirPath, file));
+        });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 
 module.exports = router;
