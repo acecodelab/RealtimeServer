@@ -46,6 +46,7 @@ router.get('/upload', (req, res) => {
 });
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
+        fs.unlinkSync(file.path);
         cb(null, path.join(__dirname, '../public/'));
     },
     filename: (req, file, cb) => {
