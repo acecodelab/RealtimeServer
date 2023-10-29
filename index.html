@@ -1,0 +1,74 @@
+<style>
+    body {
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #f7f7f7;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+h1 {
+    font-size: 24px;
+    margin: 10px 0;
+}
+
+.file-input {
+    margin: 20px 0;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.upload-button {
+    margin-top: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+</style>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Geeoh</title>
+    
+</head>
+<body>
+    <div class="container">
+        <h1>Upload Image/Audio/Video</h1>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <div class="file-input">
+                <label for="file">Choose a file,click here:</label>
+                <input type="file" id="file" name="file">
+            </div>
+            <div class="upload-button">
+                <button type="submit">Upload</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
