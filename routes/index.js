@@ -71,13 +71,13 @@ function getExtension(filename) {
 }
 
 function deleteAllFilesInDir(dirPath) {
-    try {
-        fs.readdirSync(dirPath).forEach(file => {
-            fs.unlinkSync(path.join(dirPath, file));
-        });
-    } catch (error) {
-        console.log(error);
-    }
+    // try {
+    //     fs.readdirSync(dirPath).forEach(file => {
+    //         fs.unlinkSync(path.join(dirPath, file));
+    //     });
+    // } catch (error) {
+    //     console.log(error);
+    // }
 }
 
 
