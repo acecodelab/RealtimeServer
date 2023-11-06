@@ -1,62 +1,64 @@
 <style>
     body {
-    font-family: Arial, sans-serif;
-}
+        font-family: Arial, sans-serif;
+    }
 
-.container {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    background-color: #f7f7f7;
-    border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-    text-align: center;
-}
+    .container {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        background-color: #f7f7f7;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        text-align: center;
+    }
 
-h1 {
-    font-size: 24px;
-    margin: 10px 0;
-}
+    h1 {
+        font-size: 24px;
+        margin: 10px 0;
+    }
 
-.file-input {
-    margin: 20px 0;
-}
+    .file-input {
+        margin: 20px 0;
+    }
 
-label {
-    display: block;
-    font-weight: bold;
-}
+    label {
+        display: block;
+        font-weight: bold;
+    }
 
-input[type="file"] {
-    display: none;
-}
+    input[type="file"] {
+        display: none;
+    }
 
-.upload-button {
-    margin-top: 20px;
-}
+    .upload-button {
+        margin-top: 20px;
+    }
 
-button {
-    padding: 10px 20px;
-    background-color: #3498db;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s;
-}
+    button {
+        padding: 10px 20px;
+        background-color: #3498db;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.3s;
+    }
 
-button:hover {
-    background-color: #2980b9;
-}
+    button:hover {
+        background-color: #2980b9;
+    }
 </style>
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Geeoh</title>
-    
+
 </head>
+
 <body>
     <div class="container">
         <h1>Upload Image/Audio/Video</h1>
@@ -65,10 +67,45 @@ button:hover {
                 <label for="file">Choose a file,click here:</label>
                 <input type="file" id="file" name="file">
             </div>
+            <div>
+                <h1>Select Transaction:</h1>
+
+                <select id="transaction" onchange="displaySelected();">
+                    <option value="u">From Up</option>
+                    <option value="d">From Down</option>
+                    <option value="l">From Left</option>
+                    <option value="r">From Right</option>
+                </select>
+            </div>
+
+            <input type="text" id="transactionResult" name="transactionResult" value="" style="display:none ;">
+            <div><br/></b></div>
+            <div>
+                <label for="datetime">Select from time:</label>
+                <input type="datetime-local" id="datetimefrom" name="datetimefrom">
+            </div>
+            <div><br/></b></div>
+            <div>
+                <label for="datetime">Select To time:</label>
+                <input type="datetime-local" id="datetimeto" name="datetimeto">
+            </div>
+
+
             <div class="upload-button">
                 <button type="submit">Upload</button>
             </div>
         </form>
     </div>
+
+    <script>
+        function displaySelected() {
+            console.log("Hereee")
+            const selectElement = document.getElementById('transaction');
+            const selectedValue = selectElement.value;
+            alert(selectedValue)
+            document.getElementById('transactionResult').value = selectedValue;
+        }
+    </script>
 </body>
+
 </html>

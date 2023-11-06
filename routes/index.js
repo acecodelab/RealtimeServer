@@ -5,6 +5,7 @@ const testFolder = './public';
 const fs = require('fs');
 var path = require('path');
 const multer = require('multer');
+var { pool } = require('../db');
 
 router.post('/command/:cardId', function (req, res) {
     var cardId = req.params.cardId;
@@ -27,15 +28,16 @@ router.post('/', function (req, res) {
 
 router.get('/getUploadData', function (req, res) {
     var imageListName = [];
-    fs.readdir(path.join(__dirname, '../public'), function (err, images) {
-        if (err) {
-            return console.error(err)
-        }
-        images.forEach(file => {
-            imageListName.push(file)
+    const getData = 'SELECT * from adv ORDER BY id DESC LIMIT 5';
+    pool.query(getData)
+        .then((result) => {
+            res.send(result.rows)
+        })
+        .catch((err) => {
+            console.error('Error executing query:', err);
         });
-        res.send(imageListName)
-    })
+
+ 
 
 })
 
@@ -49,29 +51,27 @@ const storage = multer.diskStorage({
         cb(null, path.join(__dirname, '../public/'));
     },
     filename: (req, file, cb) => {
-        var result_old = readAllFilesInDir(path.join(__dirname, '../public/'))
-        if (result_old.length == 5) {
-            deleteAllFilesInDir(path.join(__dirname, '../public/'), result_old[0])
+        var result = readAllFilesInDir(path.join(__dirname, '../public/'))
+        if (result.length == 5) {
+            deleteAllFilesInDir(path.join(__dirname, '../public/'), result[0])
         }
-        var result_new = readAllFilesInDir(path.join(__dirname, '../public/'))
-        var fileName;
-        if (parseInt(result_old.length) === parseInt(result_new.length)) {
-            fileName = ((result_old.length) + 1)
-        }
-        else {
-            fileName = 1
-        }
-
-        var extension = getExtension(file.originalname)
-        extension = extension[extension.length - 1];
-        cb(null, fileName + '.' + extension);
+        cb(null, file.originalname);
     }
 });
 const upload = multer({ storage: storage });
 
 router.post('/upload', upload.single('file'), (req, res) => {
     if (req.file) {
-        res.send('File uploaded!');
+        const queryText = 'INSERT INTO public.adv(name, animation, "from", "to", status)VALUES (' + "'" + req.file.originalname + "'" + ', ' + "'" + req.body.transactionResult + "'" + ', ' + "'" + req.body.datetimefrom + "'" + ',  ' + "'" + req.body.datetimeto + "'" + ',' + "'Y'" + ' );';
+
+        pool.query(queryText)
+            .then((result) => {
+                res.send('File uploaded!');
+            })
+            .catch((err) => {
+                console.error('Error executing query:', err);
+            });
+
     } else {
         res.send('No file selected.');
     }
