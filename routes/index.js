@@ -46,12 +46,25 @@ router.get('/upload', (req, res) => {
 });
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        deleteAllFilesInDir(path.join(__dirname, '../public/'))
         cb(null, path.join(__dirname, '../public/'));
     },
     filename: (req, file, cb) => {
+        var result_old = readAllFilesInDir(path.join(__dirname, '../public/'))
+        if (result_old.length == 5) {
+            deleteAllFilesInDir(path.join(__dirname, '../public/'), result_old[0])
+        }
+        var result_new = readAllFilesInDir(path.join(__dirname, '../public/'))
+        var fileName;
+        if (parseInt(result_old.length) === parseInt(result_new.length)) {
+            fileName = ((result_old.length) + 1)
+        }
+        else {
+            fileName = 1
+        }
+
         var extension = getExtension(file.originalname)
-        cb(null, '1.' + extension);
+        extension = extension[extension.length - 1];
+        cb(null, fileName + '.' + extension);
     }
 });
 const upload = multer({ storage: storage });
@@ -65,20 +78,27 @@ router.post('/upload', upload.single('file'), (req, res) => {
 });
 
 function getExtension(filename) {
-    console.log(filename)
     var ext = path.extname(filename || '').split('.');
-    return ext[ext.length - 1];
+    return ext;
 }
 
-function deleteAllFilesInDir(dirPath) {
-    // try {
-    //     fs.readdirSync(dirPath).forEach(file => {
-    //         fs.unlinkSync(path.join(dirPath, file));
-    //     });
-    // } catch (error) {
-    //     console.log(error);
-    // }
+function deleteAllFilesInDir(dirPath, file) {
+    try {
+        fs.unlinkSync(path.join(dirPath, file));
+    } catch (error) {
+        console.log(error);
+    }
 }
 
-
+function readAllFilesInDir(dirPath) {
+    var images = []
+    try {
+        fs.readdirSync(dirPath).forEach(file => {
+            images.push(file)
+        });
+    } catch (error) {
+        console.log(error);
+    }
+    return images;
+}
 module.exports = router;
