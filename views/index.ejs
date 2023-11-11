@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Grid</title>
+    <style>
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 10px;
+        }
+        .image-item img {
+            width: 50%;
+            height: auto;
+        }
+        .delete-btn {
+            display: block;
+            margin-top: 5px;
+            cursor: pointer;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="image-grid">
+        <% images.forEach(image => { %>
+            <div class="image-item">
+                <img src="/<%= image %>" alt="Image" />
+                <a href="/delete/<%= image %>" class="delete-btn">Delete</a>
+            </div>
+        <% }); %>
+    </div>
+</body>
+</html>
