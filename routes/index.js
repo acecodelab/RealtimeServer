@@ -170,8 +170,7 @@ router.post('/upload', upload.single('file'), async (req, res) => {
         var to = req.body.datetimeto;
         console.log(from + '-----' + to)
 
-        const queryText = 'INSERT INTO public.adv(name, animation, "from", "to", status,duration)VALUES (' + "'" + req.file.originalname + "'" + ', ' + "'" + req.body.transactionResult + "'" + ', ' + "'timezone('UTC'," + from + ")'" + ',  ' + "'timezone('UTC'," + to + ")'" + ',' + "'Y'" + ',  ' + "'" + req.body.duration + "'" + ' );';
-        console.log('INSERT INTO public.adv(name, animation, "from", "to", status,duration)VALUES (' + "'" + req.file.originalname + "'" + ', ' + "'" + req.body.transactionResult + "'" + ', ' + "'timezone('UTC'," + from + ")'" + ',  ' + "'timezone('UTC'," + to + ")'" + ',' + "'Y'" + ',  ' + "'" + req.body.duration + "'" + ' )')
+        const queryText = 'INSERT INTO public.adv(name, animation, "from", "to", status,duration)VALUES (' + "'" + req.file.originalname + "'" + ', ' + "'" + req.body.transactionResult + "'" + ', ' + "timezone('UTC'," + "'" + from + "')" + ',  ' + "timezone('UTC'," + "'" + to + "')" + ',' + "'Y'" + ',  ' + "'" + req.body.duration + "'" + ' );';
         pool.query(queryText)
             .then((result) => {
                 res.send('File uploaded!');
