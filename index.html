@@ -59,6 +59,30 @@
             width: 100%;
             height: auto;
         }
+
+        form {
+            max-width: 300px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            flex-direction: row;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        input[type="radio"]:checked+label {
+            color: #fff;
+            background-color: #007bff;
+        }
 </style>
 <!DOCTYPE html>
 <html>
@@ -76,9 +100,9 @@
                 <label for="file">Choose a file,click here:</label>
                 <input type="file" id="file" name="file">
             </div>
+            <hr>
             <div>
-                <h1>Select Transaction:</h1>
-
+                <label for="datetime">Select Transaction Type:</label>
                 <select id="transaction" onchange="displaySelected();">
                     <option value="u">From Up</option>
                     <option value="d">From Down</option>
@@ -86,7 +110,7 @@
                     <option value="r">From Right</option>
                 </select>
             </div>
-
+            <hr>
             <input type="text" id="transactionResult" name="transactionResult" value="" style="display:none ;">
             <div><br/></b></div>
             <div>
@@ -98,7 +122,18 @@
                 <label for="datetime">Select To time:</label>
                 <input type="datetime-local" id="datetimeto" name="datetimeto">
             </div>
-
+            <hr>
+            <div>
+                <label>Select duration</label>
+               
+                <input type="radio" name="duration" value="10000"> 10 sec
+                
+                <input type="radio" name="duration" value="20000"> 20 sec
+            
+                <input type="radio" name="duration" value="30000"> 30 sec
+                
+            </div>
+            <hr>
 
             <div class="upload-button">
                 <button type="submit">Upload</button>
