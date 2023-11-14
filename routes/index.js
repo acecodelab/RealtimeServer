@@ -109,6 +109,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 router.post('/upload', upload.single('file'), async (req, res) => {
+    const currentDate = new Date();
+    console.log(currentDate,"Current Date/Time");
 
     if (req.file.mimetype.startsWith('image/')) {
         const dimensions = sizeOf(req.file.path);
