@@ -6,6 +6,8 @@ const fs = require('fs');
 var path = require('path');
 const multer = require('multer');
 var { pool } = require('../db');
+const sizeOf = require('image-size');
+const getDimensions = require('get-video-dimensions');
 
 router.get('/checkCurrentImages', (req, res) => {
     const imageFolder = path.join(__dirname, '../public/');
@@ -14,15 +16,14 @@ router.get('/checkCurrentImages', (req, res) => {
             console.log(err);
             res.status(500).send('Internal Server Error');
         } else {
-            var filesFinal=[]
-            for(let i=0;i<files.length;i++)
-            {
+            var filesFinal = []
+            for (let i = 0; i < files.length; i++) {
                 console.log(files[i])
                 if (files[i].includes('expire')) {
                 } else {
                     filesFinal.push(files[i])
                 }
-    
+
             }
             res.render('index', { images: filesFinal });
         }
@@ -77,7 +78,7 @@ router.post('/', function (req, res) {
 
 router.get('/getUploadData', function (req, res) {
     var imageListName = [];
-    const getData = 'SELECT * from adv ORDER BY id DESC LIMIT 5';
+    const getData = 'SELECT * from adv where status=' + "'Y'" + ' ORDER BY id DESC LIMIT 5';
     pool.query(getData)
         .then((result) => {
             res.send(result.rows)
@@ -89,8 +90,6 @@ router.get('/getUploadData', function (req, res) {
 
 
 })
-
-
 
 router.get('/upload', (req, res) => {
     res.sendFile(path.join(__dirname, '../index.html'));
@@ -109,7 +108,58 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-router.post('/upload', upload.single('file'), (req, res) => {
+router.post('/upload', upload.single('file'), async (req, res) => {
+
+    if (req.file.mimetype.startsWith('image/')) {
+        const dimensions = sizeOf(req.file.path);
+        if (dimensions.width !== 640 || dimensions.height !== 480) {
+            fs.unlink(req.file.path, (err) => {
+                if (err) {
+                    console.error('Error deleting file:', err);
+                } else {
+                    return res.status(400).send('Image resolution must be 640x480 pixels.');
+                }
+            });
+        }
+    }
+
+    if (req.file.mimetype.startsWith('video/')) {
+        try {
+            // const dimensions = await getVideoDimensions(req.file.path);
+            // if (!dimensions || dimensions.width !== 640 || dimensions.height !== 480) {
+            //     fs.unlink(req.file.path, (err) => {
+            //         if (err) {
+            //             console.error('Error deleting file:', err);
+            //         } else {
+            //             throw new Error('Video resolution must be 640x480 pixels.');
+            //         }
+            //     });
+            // }
+        } catch (error) {
+            return res.status(400).send(error.message);
+        }
+    }
+
+
+    const fileExtension = path.extname(req.file.originalname);
+    console.log(fileExtension)
+    var size;
+    if (fileExtension == '.mp4') {
+        size = 2
+    }
+    else {
+        size = 1
+    }
+    if (req.file.size > 1024 * 1024 * parseInt(size)) {
+        return fs.unlink(req.file.path, (err) => {
+            if (err) {
+                console.error('Error deleting file:', err);
+            } else {
+                return res.status(400).send('File size exceeds the limit of ' + size + ' MB.');
+            }
+        });
+    }
+
     if (req.file) {
         const queryText = 'INSERT INTO public.adv(name, animation, "from", "to", status)VALUES (' + "'" + req.file.originalname + "'" + ', ' + "'" + req.body.transactionResult + "'" + ', ' + "'" + req.body.datetimefrom + "'" + ',  ' + "'" + req.body.datetimeto + "'" + ',' + "'Y'" + ' );';
 
