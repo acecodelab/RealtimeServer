@@ -77,6 +77,8 @@ router.post('/', function (req, res) {
 })
 
 router.get('/getUploadData', function (req, res) {
+    const currentDate = new Date();
+    console.log(currentDate,"Current Date/Time");
     var imageListName = [];
     const getData = 'SELECT * from adv where status=' + "'Y'" + ' ORDER BY id DESC LIMIT 5';
     pool.query(getData)
