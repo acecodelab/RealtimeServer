@@ -78,7 +78,7 @@ router.post('/', function (req, res) {
 
 router.get('/getUploadData', function (req, res) {
     const currentDate = new Date();
-    console.log(currentDate,"Current Date/Time");
+    console.log(currentDate, "Current Date/Time");
     var imageListName = [];
     const getData = 'SELECT * from adv where status=' + "'Y'" + ' ORDER BY id DESC LIMIT 5';
     pool.query(getData)
@@ -112,7 +112,7 @@ const upload = multer({ storage: storage });
 
 router.post('/upload', upload.single('file'), async (req, res) => {
     const currentDate = new Date();
-    console.log(currentDate,"Current Date/Time");
+    console.log(currentDate, "Current Date/Time");
 
     if (req.file.mimetype.startsWith('image/')) {
         const dimensions = sizeOf(req.file.path);
@@ -165,7 +165,7 @@ router.post('/upload', upload.single('file'), async (req, res) => {
     }
 
     if (req.file) {
-        const queryText = 'INSERT INTO public.adv(name, animation, "from", "to", status,duration)VALUES (' + "'" + req.file.originalname + "'" + ', ' + "'" + req.body.transactionResult + "'" + ', ' + "'" + req.body.datetimefrom.toISOString(); + "'" + ',  ' + "'" + req.body.datetimeto.toISOString(); + "'" + ',' + "'Y'" + ',  ' + "'" + req.body.duration + "'" + ' );';
+        const queryText = 'INSERT INTO public.adv(name, animation, "from", "to", status,duration)VALUES (' + "'" + req.file.originalname + "'" + ', ' + "'" + req.body.transactionResult + "'" + ', ' + "'" + req.body.datetimefrom.toISOString() + "'" + ',  ' + "'" + req.body.datetimeto.toISOString() + "'" + ',' + "'Y'" + ',  ' + "'" + req.body.duration + "'" + ' );';
 
         pool.query(queryText)
             .then((result) => {
