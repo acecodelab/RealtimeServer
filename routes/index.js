@@ -5,6 +5,7 @@ const testFolder = './public';
 const fs = require('fs');
 var path = require('path');
 const multer = require('multer');
+const moment = require('moment-timezone');
 var { pool } = require('../db');
 const sizeOf = require('image-size');
 const getDimensions = require('get-video-dimensions');
@@ -165,11 +166,9 @@ router.post('/upload', upload.single('file'), async (req, res) => {
     }
 
     if (req.file) {
-        const currentDateFrom = new Date(req.body.datetimefrom);
-        var from = currentDateFrom.toISOString();
-        var currentDateTo = new Date(req.body.datetimeto);
-        var to = currentDateTo.toISOString();
-        console.log(from+'-----'+to)
+        var from = new Date(req.body.datetimefrom).toISOString(); // Adjust the date, time, and time zone accordingly
+        var to = new Date(req.body.datetimeto).toISOString();
+        console.log(from + '-----' + to)
 
         const queryText = 'INSERT INTO public.adv(name, animation, "from", "to", status,duration)VALUES (' + "'" + req.file.originalname + "'" + ', ' + "'" + req.body.transactionResult + "'" + ', ' + "'" + from + "'" + ',  ' + "'" + to + "'" + ',' + "'Y'" + ',  ' + "'" + req.body.duration + "'" + ' );';
 
