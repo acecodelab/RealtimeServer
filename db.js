@@ -5,7 +5,7 @@ const pool = new Pool({
     user: 'postgres',
     host: 'localhost', // e.g., 'localhost' if it's running locally
     database: 'geeoh_upload',
-    password: 'postgres',
+    password: 'psga598tgfLf7jhh',
     port: 5432, // default PostgreSQL port
 });
 
