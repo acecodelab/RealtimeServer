@@ -166,11 +166,11 @@ router.post('/upload', upload.single('file'), async (req, res) => {
     }
 
     if (req.file) {
-        var from = new Date(req.body.datetimefrom).toISOString(); // Adjust the date, time, and time zone accordingly
-        var to = new Date(req.body.datetimeto).toISOString();
+        var from = new Date(req.body.datetimefrom); // Adjust the date, time, and time zone accordingly
+        var to = new Date(req.body.datetimeto);
         console.log(from + '-----' + to)
 
-        const queryText = 'INSERT INTO public.adv(name, animation, "from", "to", status,duration)VALUES (' + "'" + req.file.originalname + "'" + ', ' + "'" + req.body.transactionResult + "'" + ', ' + "'" + from + "'" + ',  ' + "'" + to + "'" + ',' + "'Y'" + ',  ' + "'" + req.body.duration + "'" + ' );';
+        const queryText = 'INSERT INTO public.adv(name, animation, "from", "to", status,duration)VALUES (' + "'" + req.file.originalname + "'" + ', ' + "'" + req.body.transactionResult + "'" + ', ' + "'" + timezone('UTC', from) + "'" + ',  ' + "'" + timezone('UTC', to) + "'" + ',' + "'Y'" + ',  ' + "'" + req.body.duration + "'" + ' );';
 
         pool.query(queryText)
             .then((result) => {
