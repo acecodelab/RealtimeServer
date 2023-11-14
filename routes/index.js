@@ -165,7 +165,12 @@ router.post('/upload', upload.single('file'), async (req, res) => {
     }
 
     if (req.file) {
-        const queryText = 'INSERT INTO public.adv(name, animation, "from", "to", status,duration)VALUES (' + "'" + req.file.originalname + "'" + ', ' + "'" + req.body.transactionResult + "'" + ', ' + "'" + req.body.datetimefrom.toISOString() + "'" + ',  ' + "'" + req.body.datetimeto.toISOString() + "'" + ',' + "'Y'" + ',  ' + "'" + req.body.duration + "'" + ' );';
+        const currentDateFrom = new Date(req.body.datetimefrom);
+        var from = currentDateFrom.toISOString();
+        var currentDateTo = new Date(req.body.datetimeto);
+        var to = currentDateTo.toISOString();
+
+        const queryText = 'INSERT INTO public.adv(name, animation, "from", "to", status,duration)VALUES (' + "'" + req.file.originalname + "'" + ', ' + "'" + req.body.transactionResult + "'" + ', ' + "'" + from + "'" + ',  ' + "'" + to + "'" + ',' + "'Y'" + ',  ' + "'" + req.body.duration + "'" + ' );';
 
         pool.query(queryText)
             .then((result) => {
