@@ -169,6 +169,7 @@ router.post('/upload', upload.single('file'), async (req, res) => {
         var from = currentDateFrom.toISOString();
         var currentDateTo = new Date(req.body.datetimeto);
         var to = currentDateTo.toISOString();
+        console.log(from+'-----'+to)
 
         const queryText = 'INSERT INTO public.adv(name, animation, "from", "to", status,duration)VALUES (' + "'" + req.file.originalname + "'" + ', ' + "'" + req.body.transactionResult + "'" + ', ' + "'" + from + "'" + ',  ' + "'" + to + "'" + ',' + "'Y'" + ',  ' + "'" + req.body.duration + "'" + ' );';
 
