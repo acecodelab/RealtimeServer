@@ -170,14 +170,13 @@
       const from = fromDate + 'T' + fromTime;
       const to = toDate + 'T' + toTime;
 
-      alert(from+'-'+to);
-
       // Create a Date object with the combined date and time
-      const selectedDateTime = new Date(combinedDateTimeString);
+      const selectedDateFrom = new Date(from);
+      const selectedDateTo = new Date(to);
 
       // Get the UTC time of the selected date and time
-      const fromUtc = from.toISOString();
-      const toUtc = to.toISOString();
+      const fromUtc = selectedDateFrom.toISOString();
+      const toUtc = selectedDateTo.toISOString();
 
       document.getElementById('fromUtc').value = fromUtc;
       document.getElementById('toUtc').value = toUtc;
