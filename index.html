@@ -160,7 +160,7 @@
 
         function convertToUTC() {
       // Get the values from the date and time inputs
-      alert("Hiii");
+    
       const fromDate = document.getElementById('fromdate').value;
       const fromTime = document.getElementById('fromtime').value;
       const toDate = document.getElementById('todate').value;
@@ -169,6 +169,8 @@
       // Combine date and time into a single string
       const from = fromDate + 'T' + fromTime;
       const to = toDate + 'T' + toTime;
+
+      alert(from+'-'+to);
 
       // Create a Date object with the combined date and time
       const selectedDateTime = new Date(combinedDateTimeString);
