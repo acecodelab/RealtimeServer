@@ -113,15 +113,25 @@
             <hr>
             <input type="text" id="transactionResult" name="transactionResult" value="" style="display:none ;">
             <div><br/></b></div>
+                
             <div>
-                <label for="datetime">Select from time:</label>
-                <input type="datetime-local" id="datetimefrom" name="datetimefrom">
+                <label for="inputDate">Select a From date and Time:</label>
+                <input type="date" id="fromdate">
+                <input type="time" id="fromtime" >
+                <!-- <label for="datetime">Select from time:</label>
+                <input type="datetime-local" id="datetimefrom" name="datetimefrom"> -->
             </div>
             <div><br/></b></div>
             <div>
-                <label for="datetime">Select To time:</label>
-                <input type="datetime-local" id="datetimeto" name="datetimeto">
+                <label for="inputDate">Select a To date and Time:</label>
+                <input type="date" id="todate">
+                <input type="time" id="totime" onchange="convertToUTC()">
+                <!-- <label for="datetime">Select To time:</label>
+                <input type="datetime-local" id="datetimeto" name="datetimeto"> -->
             </div>
+            <input type="text" id="fromUtc" name="fromUtc" value="" style="display:none ;">
+            <input type="text" id="toUtc" name="toUtc" value="" style="display:none ;">
+
             <hr>
             <div>
                 <label>Select duration</label>
@@ -147,6 +157,29 @@
             const selectedValue = selectElement.value;
             document.getElementById('transactionResult').value = selectedValue;
         }
+
+        function convertToUTC() {
+      // Get the values from the date and time inputs
+      const fromDate = document.getElementById('fromdate').value;
+      const fromTime = document.getElementById('fromtime').value;
+      const toDate = document.getElementById('todate').value;
+      const toTime = document.getElementById('totime').value;
+
+      // Combine date and time into a single string
+      const from = fromDate + 'T' + fromTime;
+      const to = toDate + 'T' + toTime;
+
+      // Create a Date object with the combined date and time
+      const selectedDateTime = new Date(combinedDateTimeString);
+
+      // Get the UTC time of the selected date and time
+      const fromUtc = from.toISOString();
+      const toUtc = to.toISOString();
+
+      document.getElementById('fromUtc').value = fromUtc;
+      document.getElementById('toUtc').value = toUtc;
+
+    }
     </script>
 </body>
 
