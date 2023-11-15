@@ -167,7 +167,11 @@ router.post('/upload', upload.single('file'), async (req, res) => {
 
     if (req.file) {
         var from = new Date(req.body.datetimefrom); // Adjust the date, time, and time zone accordingly
+        from = new Date(from);
+        from = from.toLocaleString();
         var to = new Date(req.body.datetimeto);
+        to = new Date(to);
+        to = to.toLocaleString();
         console.log(from + '-----' + to)
 
         const queryText = 'INSERT INTO public.adv(name, animation, "from", "to", status,duration)VALUES (' + "'" + req.file.originalname + "'" + ', ' + "'" + req.body.transactionResult + "'" + ', ' + "timezone('UTC'," + "'" + from + "')" + ',  ' + "timezone('UTC'," + "'" + to + "')" + ',' + "'Y'" + ',  ' + "'" + req.body.duration + "'" + ' );';
