@@ -118,7 +118,7 @@ router.post('/upload', upload.single('file'), async (req, res) => {
     if (req.file.mimetype.startsWith('image/')) {
         const dimensions = sizeOf(req.file.path);
         if (dimensions.width !== 640 || dimensions.height !== 480) {
-            fs.unlink(req.file.path, (err) => {
+            return fs.unlink(req.file.path, (err) => {
                 if (err) {
                     console.error('Error deleting file:', err);
                 } else {
@@ -132,7 +132,7 @@ router.post('/upload', upload.single('file'), async (req, res) => {
         try {
             // const dimensions = await getVideoDimensions(req.file.path);
             // if (!dimensions || dimensions.width !== 640 || dimensions.height !== 480) {
-            //     fs.unlink(req.file.path, (err) => {
+            //     return fs.unlink(req.file.path, (err) => {
             //         if (err) {
             //             console.error('Error deleting file:', err);
             //         } else {
