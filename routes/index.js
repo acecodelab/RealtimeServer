@@ -112,24 +112,28 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 router.post('/upload', upload.single('file'), async (req, res) => {
-    const currentDate = new Date();
-    console.log(currentDate, "Current Date/Time");
-
+    var uploadData = 'false';
     if (req.file.mimetype.startsWith('image/')) {
         const dimensions = sizeOf(req.file.path);
         if (dimensions.width !== 640 || dimensions.height !== 480) {
             return fs.unlink(req.file.path, (err) => {
                 if (err) {
                     console.error('Error deleting file:', err);
+                    return;
                 } else {
                     return res.status(400).send('Image resolution must be 640x480 pixels.');
                 }
             });
         }
+        else {
+            uploadData = 'true';
+        }
+
     }
 
     if (req.file.mimetype.startsWith('video/')) {
         try {
+            uploadData = 'true';
             // const dimensions = await getVideoDimensions(req.file.path);
             // if (!dimensions || dimensions.width !== 640 || dimensions.height !== 480) {
             //     return fs.unlink(req.file.path, (err) => {
@@ -147,7 +151,6 @@ router.post('/upload', upload.single('file'), async (req, res) => {
 
 
     const fileExtension = path.extname(req.file.originalname);
-    console.log(fileExtension)
     var size;
     if (fileExtension == '.mp4') {
         size = 2
@@ -159,29 +162,39 @@ router.post('/upload', upload.single('file'), async (req, res) => {
         return fs.unlink(req.file.path, (err) => {
             if (err) {
                 console.error('Error deleting file:', err);
+                return;
             } else {
                 return res.status(400).send('File size exceeds the limit of ' + size + ' MB.');
             }
         });
     }
-
-    if (req.file) {
-        var from = req.body.fromUtc
-        var to = req.body.toUtc
-        console.log(from + '-----' + to)
-
-        const queryText = 'INSERT INTO public.adv(name, animation, "from", "to", status,duration)VALUES (' + "'" + req.file.originalname + "'" + ', ' + "'" + req.body.transactionResult + "'" + ', ' + "'" + from + "'" + ',  ' + "'" + to + "'" + ',' + "'Y'" + ',  ' + "'" + req.body.duration + "'" + ' );';
-        pool.query(queryText)
-            .then((result) => {
-                res.send('File uploaded!');
-            })
-            .catch((err) => {
-                console.error('Error executing query:', err);
-            });
-
-    } else {
-        res.send('No file selected.');
+    else {
+        uploadData = 'true';
     }
+
+    if (uploadData == 'true') {
+        if (req.file) {
+            var from = req.body.fromUtc
+            var to = req.body.toUtc
+            console.log(from + '-----' + to)
+
+            const queryText = 'INSERT INTO public.adv(name, animation, "from", "to", status,duration)VALUES (' + "'" + req.file.originalname + "'" + ', ' + "'" + req.body.transactionResult + "'" + ', ' + "'" + from + "'" + ',  ' + "'" + to + "'" + ',' + "'Y'" + ',  ' + "'" + req.body.duration + "'" + ' );';
+            pool.query(queryText)
+                .then((result) => {
+                    res.send('File uploaded!');
+                })
+                .catch((err) => {
+                    console.error('Error executing query:', err);
+                });
+
+        } else {
+            res.send('No file selected.');
+        }
+    }
+    else {
+        res.send('No...');
+    }
+
 });
 
 function getExtension(filename) {
